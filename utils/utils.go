@@ -12,27 +12,36 @@ const newLine string = "\r\n"
 func ParseMessage(file []byte, users []string) mta.MessageBody {
 	reader := bytes.NewReader(file)
 	scanner := bufio.NewScanner(reader)
+	var dataCommandIndex int
+	var endDataCommandIndex int
 	var data [][]byte
 	var i = 0
 	for scanner.Scan() {
+		text := scanner.Text() + newLine
 		switch i {
 			case 2:
 				for _, user := range(users) {
 					data = append(data, []byte("RCPT TO: <" + user + ">" + newLine))
 				}
-				data = append(data, []byte(scanner.Text() + newLine))
+				data = append(data, []byte(text))
+				dataCommandIndex = i + len(users)
 				break
 			default:
-				data = append(data, []byte(scanner.Text() + newLine))
+				if scanner.Text() == "." {
+					text = newLine + text
+				}
+				data = append(data, []byte(text))
+				endDataCommandIndex = i
 				break
 		}
-//		log.Println(string(data[i]))
 		i++
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 	messageBody := mta.MessageBody{
+		DataCommandIndex: dataCommandIndex,
+		EndDataCommandIndex: endDataCommandIndex,
 		Data: data,
 	}
 	return messageBody

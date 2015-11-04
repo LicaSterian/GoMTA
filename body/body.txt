@@ -1,10 +1,10 @@
 EHLO mail.dom.eu
 MAIL FROM:<llamineacasa@casdaka.com>
 DATA
-
 From: "Bob Example" <bob@example.org>
 To: "Lica" <lica.sterian@yahoo.com>
 Subject: Hello Lica. 
-Your friend  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
 . 
 QUIT

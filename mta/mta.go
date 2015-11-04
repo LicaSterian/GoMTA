@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-var smtpHost string
-
 type Mta struct{
 	Host string// = "mta5.am0.yahoodns.net"
 }
@@ -28,18 +26,17 @@ func sendMessage(host string, messageBody MessageBody, to string) {
 	}
 	onResponse(conn)
 	for i, command := range messageBody.Data {
-		time.Sleep(2 * time.Second)
-		sendCommand(conn, command, i < 3)
+		time.Sleep(1 * time.Second)
+		// TODO change hardcoded values with messageBody.
+		sendCommand(conn, command, i < 4 || i >= 9)
 	}
 }
 
 func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
 	log.Println("sendCommand", string(command), hasResponse)
 	conn.Write(command)
-//	if !respondNow {
-
-//	}
 	if hasResponse {
+		time.Sleep(1 * time.Second)
 		onResponse(conn)
 	}
 }
@@ -54,67 +51,5 @@ func onResponse(conn net.Conn) {
 			log.Printf("err: %v", err)
 		}
 	}
-	log.Printf("onResponse:\n", hex.Dump(data[:n]))
-	log.Println("==============================")
+	log.Println(hex.Dump(data[:n]))
 }
-
-
-/*
-func sendMessage(host string, messageBody MessageBody, to string) {
-	conn, err := net.Dial("tcp", host + ":smtp")
-	if err != nil {
-		log.Fatal("err ", err)
-	}
-	log.Printf("%+v", conn)
-	log.Printf("%+v", messageBody)
-
-*/
-
-	/*if err := conn.Mail(messageBody.MailFrom); err != nil {
-		log.Fatal(err)
-	}
-	if err := conn.Rcpt(to); err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println(host)
-	log.Println(messageBody.MailFrom)
-	log.Println(to)
-	log.Println(messageBody.Body)
-
-	// Send the email body.
-
-	wc, err := conn.Data()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-//	_, err = log.Printf(wc, getMessageBody(mailMessage))
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = wc.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Send the QUIT command and close the connection.
-	err = conn.Quit()
-	if err != nil {
-		log.Fatal(err)
-	}*/
-//}
-
-/*
-func getMessageBody(mailMessage MailMessage) string {
-	var newLine = "\r\n"
-	var result string
-
-	result += "from: " + mailMessage.from + newLine
-	result += "to: " + mailMessage.to + newLine
-	result += "subject: " + mailMessage.subject + newLine + newLine
-	result += mailMessage.body + newLine
-
-	return result
-}
-*/
