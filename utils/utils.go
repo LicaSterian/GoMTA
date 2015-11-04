@@ -31,7 +31,7 @@ func ParseMessage(file []byte, users []string) mta.MessageBody {
 					text = newLine + "." + newLine
 				}
 				data = append(data, []byte(text))
-				endDataCommandIndex = i
+				endDataCommandIndex = i + len(users) - 1
 				break
 		}
 		i++

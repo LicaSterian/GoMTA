@@ -6,5 +6,6 @@ To: "Lica" <lica.sterian@yahoo.com>
 Subject: Hello Lica. 
 
 Hello. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
+What's up?
 .
 QUIT
