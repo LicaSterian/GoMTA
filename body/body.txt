@@ -1,10 +1,10 @@
 EHLO mail.dom.eu
-MAIL FROM:<llamineacasa@casdaka.com>
+MAIL FROM:<dirdel@tatutzu.com>
 DATA
-From: "Bob Example" <bob@example.org>
+From: "dirdel" <dirdel@tatutzu.org>
 To: "Lica" <lica.sterian@yahoo.com>
 Subject: Hello Lica. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
-. 
+Hello. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
+.
 QUIT

@@ -28,7 +28,7 @@ func ParseMessage(file []byte, users []string) mta.MessageBody {
 				break
 			default:
 				if scanner.Text() == "." {
-					text = newLine + text
+					text = newLine + "." + newLine
 				}
 				data = append(data, []byte(text))
 				endDataCommandIndex = i

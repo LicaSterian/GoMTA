@@ -26,9 +26,7 @@ func sendMessage(host string, messageBody MessageBody, to string) {
 	}
 	onResponse(conn)
 	for i, command := range messageBody.Data {
-		time.Sleep(1 * time.Second)
-		// TODO change hardcoded values with messageBody.
-		sendCommand(conn, command, i < 4 || i >= 9)
+		sendCommand(conn, command, i <= messageBody.DataCommandIndex || i >= messageBody.EndDataCommandIndex)
 	}
 }
 
@@ -36,8 +34,9 @@ func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
 	log.Println("sendCommand", string(command), hasResponse)
 	conn.Write(command)
 	if hasResponse {
-		time.Sleep(1 * time.Second)
+		time.Sleep(2 * time.Second)
 		onResponse(conn)
+
 	}
 }
 
