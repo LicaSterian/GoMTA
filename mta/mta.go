@@ -41,6 +41,7 @@ func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
 	}
 }
 
+// TODO error handling by resulted code
 func onResponse(conn net.Conn) {
 	data := make([]byte, 1024)
 	n, err := conn.Read(data)
