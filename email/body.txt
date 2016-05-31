@@ -1,0 +1,14 @@
+EHLO mail.dom.eu
+MAIL FROM:<dirdel@tatutzu.com>
+DATA
+From: "dirdel" <dirdel@tatutzu.com>
+Subject: Hello Lica. 
+
+Hello Lica.
+
+Did you know lorem20?
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
+
+Your's trully,
+Dirdel.
+.

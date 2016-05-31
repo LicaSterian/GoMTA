@@ -8,13 +8,18 @@ import (
 )
 
 func main() {
-	file, err := ioutil.ReadFile("./body/body.txt")
+	file, err := ioutil.ReadFile("./email/body.txt")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	users := []string{"lica.sterian@yahoo.com"}
-	parsedMessage := utils.ParseMessage(file, users)
+	users := []mta.Recipient{
+		mta.Recipient{Name: "Lica", Email:"lica.sterian@yahoo.com"},
+		//mta.Recipient{Name: "Alexandra", Email:"bebesha89@yahoo.com"},
+	}
 	var m = mta.Mta{"mta5.am0.yahoodns.net"}
-	m.Send(parsedMessage, users)
+	for _, user := range(users) {
+		parsedMessage := utils.ParseMessage(file, user)
+		m.Send(parsedMessage)
+	}
 }

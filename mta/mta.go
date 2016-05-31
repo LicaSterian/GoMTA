@@ -5,21 +5,34 @@ import (
 	"net"
 	"encoding/hex"
 	"io"
-	"time"
+//	"time"
 )
 
 type Mta struct{
-	Host string// = "mta5.am0.yahoodns.net"
+	Host string
 }
 
-func (m Mta) Send(messageBody MessageBody, rcptTo []string) {
-	for _, to := range rcptTo {
-		sendMessage(m.Host, messageBody, to)
-	}
+var currentMessageBody MessageBody
+var currentHost string
+
+func (m Mta) Send(messageBody MessageBody) {
+	log.Println("sending message")
+	currentHost = m.Host
+	send(messageBody)
 }
 
-func sendMessage(host string, messageBody MessageBody, to string) {
-	log.Println("sendMessage", host, to)
+func send(messageBody MessageBody) {
+	currentMessageBody = messageBody
+	sendMessage(currentHost, messageBody)
+}
+
+func retrySend() {
+	log.Println("retrying sending of message")
+	send(currentMessageBody)
+}
+
+func sendMessage(host string, messageBody MessageBody) {
+	log.Println("sendMessage", host)
 	conn, err := net.Dial("tcp", host + ":smtp")
 	if err != nil {
 		log.Fatal("err ", err)
@@ -34,13 +47,10 @@ func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
 	log.Println("sendCommand", string(command), hasResponse)
 	conn.Write(command)
 	if hasResponse {
-		time.Sleep(2 * time.Second)
 		onResponse(conn)
-
 	}
 }
 
-// TODO error handling by resulted code
 func onResponse(conn net.Conn) {
 	data := make([]byte, 1024)
 	n, err := conn.Read(data)
@@ -50,6 +60,7 @@ func onResponse(conn net.Conn) {
 		} else {
 			log.Printf("err: %v", err)
 		}
+		retrySend()
 	}
 	log.Println(hex.Dump(data[:n]))
 }

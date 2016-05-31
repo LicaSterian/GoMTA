@@ -9,7 +9,8 @@ import (
 
 const newLine string = "\r\n"
 
-func ParseMessage(file []byte, users []string) mta.MessageBody {
+// make commands from DATA to . all in one command and store it in a body
+func ParseMessage(file []byte, recipient mta.Recipient) mta.MessageBody {
 	reader := bytes.NewReader(file)
 	scanner := bufio.NewScanner(reader)
 	var dataCommandIndex int
@@ -20,18 +21,19 @@ func ParseMessage(file []byte, users []string) mta.MessageBody {
 		text := scanner.Text() + newLine
 		switch i {
 			case 2:
-				for _, user := range(users) {
-					data = append(data, []byte("RCPT TO: <" + user + ">" + newLine))
-				}
+				data = append(data, []byte("RCPT TO: <" + recipient.Email + ">" + newLine))
+				i++
 				data = append(data, []byte(text))
-				dataCommandIndex = i + len(users)
+				dataCommandIndex = i
+				data = append(data, []byte("To: " + recipient.Name + " <" + recipient.Email + ">" + newLine))
+				i++
 				break
 			default:
 				if scanner.Text() == "." {
 					text = newLine + "." + newLine
+					endDataCommandIndex = i
 				}
 				data = append(data, []byte(text))
-				endDataCommandIndex = i + len(users) - 1
 				break
 		}
 		i++

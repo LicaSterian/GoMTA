@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "EHLO mail.dom.eu",
+    "MAIL FROM: <dirdel@tatuzu.com>"
+  ],
+  "data": [
+    "From: \"dirdel\" <dirdel@tatutzu.com>",
+    "Subject: Hello Lica. "
+  ],
+  "body": [
+    "Hello Lica.",
+    "Did you know lorem20?",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. ",
+    "",
+    "Your's trully,",
+    "Dirdel.",
+    "."
+  ]
+}

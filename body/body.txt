@@ -1,11 +1,0 @@
-EHLO mail.dom.eu
-MAIL FROM:<dirdel@tatutzu.com>
-DATA
-From: "dirdel" <dirdel@tatutzu.org>
-To: "Lica" <lica.sterian@yahoo.com>
-Subject: Hello Lica. 
-
-Hello. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac eros turpis. 
-What's up?
-.
-QUIT
