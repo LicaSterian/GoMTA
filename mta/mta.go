@@ -3,9 +3,8 @@ package mta
 import (
 	"log"
 	"net"
-	"encoding/hex"
+	//"encoding/hex"
 	"io"
-//	"time"
 )
 
 type Mta struct{
@@ -16,7 +15,6 @@ var currentMessageBody MessageBody
 var currentHost string
 
 func (m Mta) Send(messageBody MessageBody) {
-	log.Println("sending message")
 	currentHost = m.Host
 	send(messageBody)
 }
@@ -44,7 +42,7 @@ func sendMessage(host string, messageBody MessageBody) {
 }
 
 func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
-	log.Println("sendCommand", string(command), hasResponse)
+	//log.Println("sendCommand", string(command), hasResponse)
 	conn.Write(command)
 	if hasResponse {
 		onResponse(conn)
@@ -53,7 +51,7 @@ func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
 
 func onResponse(conn net.Conn) {
 	data := make([]byte, 1024)
-	n, err := conn.Read(data)
+	_, err := conn.Read(data)
 	if err != nil {
 		if err != io.EOF {
 			panic(err)
@@ -62,5 +60,5 @@ func onResponse(conn net.Conn) {
 		}
 		retrySend()
 	}
-	log.Println(hex.Dump(data[:n]))
+	//log.Println(hex.Dump(data[:n]))
 }
