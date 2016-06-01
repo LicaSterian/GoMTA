@@ -1,7 +1,5 @@
 package mta
 
-import "github.com/gin-gonic/gin"
-
 type MessageBody struct {
 	DataCommandIndex int
 	EndDataCommandIndex int
@@ -13,8 +11,10 @@ type MailHeader struct {
 	Subject string
 }
 
+type Map map[string]interface{}
+
 type Sender struct {
 	Domain, MailFrom string
 	Header MailHeader
-	Body gin.H
+	Body Map
 }

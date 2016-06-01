@@ -30,7 +30,6 @@ func retrySend() {
 }
 
 func sendMessage(host string, messageBody MessageBody) {
-	log.Println("sendMessage", host)
 	conn, err := net.Dial("tcp", host + ":smtp")
 	if err != nil {
 		log.Fatal("err ", err)
@@ -42,7 +41,6 @@ func sendMessage(host string, messageBody MessageBody) {
 }
 
 func sendCommand(conn net.Conn, command []byte, hasResponse bool) {
-	//log.Println("sendCommand", string(command), hasResponse)
 	conn.Write(command)
 	if hasResponse {
 		onResponse(conn)
@@ -60,5 +58,4 @@ func onResponse(conn net.Conn) {
 		}
 		retrySend()
 	}
-	//log.Println(hex.Dump(data[:n]))
 }

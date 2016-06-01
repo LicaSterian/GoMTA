@@ -5,6 +5,8 @@ import (
 	"log"
 	"bufio"
 	"bytes"
+	"io/ioutil"
+	"text/template"
 )
 
 const newLine string = "\r\n"
@@ -47,4 +49,24 @@ func ParseMessage(file []byte, recipient mta.Recipient) mta.MessageBody {
 		Data: data,
 	}
 	return messageBody
+}
+
+func ParseTemplate(path string, sender *mta.Sender, recipient mta.Recipient) mta.MessageBody {
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Fatal("ioutil.ReadFile error :", err.Error())
+	}
+	tpl, err := template.New("mailTemplate").Parse(string(file))
+	if err != nil {
+		log.Fatal("template.New error :", err.Error())
+	}
+
+	var buf bytes.Buffer
+	err = tpl.Execute(&buf, mta.Map{
+		"Sender": &sender,
+	})
+	if err != nil {
+		log.Fatal("template.Execute error :", err.Error())
+	}
+	return ParseMessage(buf.Bytes(), recipient)
 }
